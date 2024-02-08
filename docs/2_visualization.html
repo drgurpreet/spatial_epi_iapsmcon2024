@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Hands-on Workshop on Spatial Epidemiology using R: IPASMCON 2024 - Spatial Data Visualization in Epidemiology</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href=".//images/nwhda_hex.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <img src="./images/spatial_hex.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Hands-on Workshop on Spatial Epidemiology using R: IPASMCON 2024</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./1_intro.html" rel="" target="">
+ <span class="menu-text">Introduction to Spatial Epidemiology</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./2_visualization.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Spatial Data Visualization in Epidemiology</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./3_data_mgmt.html" rel="" target="">
+ <span class="menu-text">Spatial Data Management</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./4_spatial_stats.html" rel="" target="">
+ <span class="menu-text">Spatial Statistics in Epidemiology</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./5_gwr.html" rel="" target="">
+ <span class="menu-text">Spatial Regression models: An introduction</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar"><div class="quarto-margin-header"><div class="margin-header-item">
+<p><img src=".\images/spatial_hex.png" class="img-fluid" style="width:65.0%"></p>
+</div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#section" id="toc-section" class="nav-link active" data-scroll-target="#section"></a>
+  <ul class="collapse">
+  <li><a href="#introduction." id="toc-introduction." class="nav-link" data-scroll-target="#introduction.">Introduction.</a></li>
+  <li><a href="#expectations-from-the-present-session." id="toc-expectations-from-the-present-session." class="nav-link" data-scroll-target="#expectations-from-the-present-session.">Expectations from the present session.</a></li>
+  <li><a href="#graphic-variables." id="toc-graphic-variables." class="nav-link" data-scroll-target="#graphic-variables.">Graphic Variables.</a>
+  <ul class="collapse">
+  <li><a href="#location." id="toc-location." class="nav-link" data-scroll-target="#location.">Location.</a></li>
+  <li><a href="#value." id="toc-value." class="nav-link" data-scroll-target="#value.">Value.</a></li>
+  <li><a href="#color" id="toc-color" class="nav-link" data-scroll-target="#color">Color</a></li>
+  <li><a href="#size." id="toc-size." class="nav-link" data-scroll-target="#size.">Size.</a></li>
+  <li><a href="#shape." id="toc-shape." class="nav-link" data-scroll-target="#shape.">Shape.</a></li>
+  <li><a href="#space." id="toc-space." class="nav-link" data-scroll-target="#space.">Space.</a></li>
+  <li><a href="#orientation." id="toc-orientation." class="nav-link" data-scroll-target="#orientation.">Orientation.</a></li>
+  </ul></li>
+  <li><a href="#map-components." id="toc-map-components." class="nav-link" data-scroll-target="#map-components.">Map components.</a>
+  <ul class="collapse">
+  <li><a href="#map." id="toc-map." class="nav-link" data-scroll-target="#map.">Map.</a></li>
+  <li><a href="#title." id="toc-title." class="nav-link" data-scroll-target="#title.">Title.</a></li>
+  <li><a href="#distance-and-scale." id="toc-distance-and-scale." class="nav-link" data-scroll-target="#distance-and-scale.">Distance and Scale.</a></li>
+  <li><a href="#direction." id="toc-direction." class="nav-link" data-scroll-target="#direction.">Direction.</a></li>
+  <li><a href="#legend." id="toc-legend." class="nav-link" data-scroll-target="#legend.">Legend.</a></li>
+  <li><a href="#credits." id="toc-credits." class="nav-link" data-scroll-target="#credits.">Credits.</a></li>
+  </ul></li>
+  <li><a href="#understanding-the-process-of-map-creation." id="toc-understanding-the-process-of-map-creation." class="nav-link" data-scroll-target="#understanding-the-process-of-map-creation.">Understanding the process of Map creation.</a>
+  <ul class="collapse">
+  <li><a href="#creating-a-base-map." id="toc-creating-a-base-map." class="nav-link" data-scroll-target="#creating-a-base-map.">Creating a Base map.</a></li>
+  <li><a href="#adding-title-sub-title." id="toc-adding-title-sub-title." class="nav-link" data-scroll-target="#adding-title-sub-title.">Adding Title/ sub-title.</a></li>
+  <li><a href="#describing-distance-and-scale." id="toc-describing-distance-and-scale." class="nav-link" data-scroll-target="#describing-distance-and-scale.">Describing Distance and Scale.</a></li>
+  <li><a href="#direction-symbols." id="toc-direction-symbols." class="nav-link" data-scroll-target="#direction-symbols.">Direction symbols.</a></li>
+  <li><a href="#adding-axis-labels" id="toc-adding-axis-labels" class="nav-link" data-scroll-target="#adding-axis-labels">Adding axis labels</a></li>
+  <li><a href="#acknowledging-credits." id="toc-acknowledging-credits." class="nav-link" data-scroll-target="#acknowledging-credits.">Acknowledging Credits.</a></li>
+  <li><a href="#adding-labels-and-legends." id="toc-adding-labels-and-legends." class="nav-link" data-scroll-target="#adding-labels-and-legends.">Adding labels and legends.</a></li>
+  </ul></li>
+  <li><a href="#visualisation-of-point-data." id="toc-visualisation-of-point-data." class="nav-link" data-scroll-target="#visualisation-of-point-data.">Visualisation of point data.</a>
+  <ul class="collapse">
+  <li><a href="#dot-maps." id="toc-dot-maps." class="nav-link" data-scroll-target="#dot-maps.">Dot Maps.</a></li>
+  <li><a href="#illustrative-example-john-snow-maps" id="toc-illustrative-example-john-snow-maps" class="nav-link" data-scroll-target="#illustrative-example-john-snow-maps">Illustrative Example: John Snow maps</a></li>
+  </ul></li>
+  <li><a href="#visualisation-of-aggregate-data." id="toc-visualisation-of-aggregate-data." class="nav-link" data-scroll-target="#visualisation-of-aggregate-data.">Visualisation of aggregate data.</a>
+  <ul class="collapse">
+  <li><a href="#choropleth-maps." id="toc-choropleth-maps." class="nav-link" data-scroll-target="#choropleth-maps.">Choropleth Maps.</a></li>
+  </ul></li>
+  <li><a href="#visualization-using-web-based-maps." id="toc-visualization-using-web-based-maps." class="nav-link" data-scroll-target="#visualization-using-web-based-maps.">Visualization using Web based maps.</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Spatial Data Visualization in Epidemiology</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+<p>Welcome to the world of Spatial Epidemiology!!</p>
+<section id="section" class="level1">
+<h1></h1>
+<section id="introduction." class="level2">
+<h2 class="anchored" data-anchor-id="introduction.">Introduction.</h2>
+<p>The role of spatial data visualization in understanding distribution and determinants of a disease were classically demonstrated in John Snow’s work in cholera epidemic of Golden Square, London in 1854 and maps have remained the most common applied aspect of Spatial epidemiology till date. Maps enable real time visualizations. However, though the concepts of spatial data visualization has its historical roots in the practice of cartography<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, with the evolution of map making computational abilities, the requirement to know the cartography concepts for visualisation of spatial data for general use has decreased to minimal. For eg. we can point a location in google maps and reach a destination without deliberations on cartographic concepts (such as northing, scale, etc). This has led to <span class="math inline">\(neogeography\)</span><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> and thus crowd-sourced databases due to volunteer contributions.</p>
+<p>In professional and academic forums, the concepts of cartography are pre-requisites to meaningful spatial data visualization. Further, the concept of using visualization methods has evolved from just a tool for communication to the concept of visualization as an analysis tool. Visualization of spatial data is used to understand distribution patterns and generate hypothesis as well as for inferential procedures. The underlying principles in Scientific visualization has led to use of visualization methods as complementary to statistical inference procedures in spatial epidemiology. For example, the interpretation of Moran’s I<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> is incomplete without accompanying visualization of dataset. The maps as analysis tools have several possible meanings and are thus polysemic in nature.</p>
+</section>
+<section id="expectations-from-the-present-session." class="level2">
+<h2 class="anchored" data-anchor-id="expectations-from-the-present-session.">Expectations from the present session.</h2>
+<p>It is expected that by end of this session, participants should be able to develop visualizations, understand and communicate epidemiological information, and develop hypothesis based on the visual representations of spatial data sets.</p>
+</section>
+<section id="graphic-variables." class="level2">
+<h2 class="anchored" data-anchor-id="graphic-variables.">Graphic Variables.</h2>
+<p><span class="math inline">\(Jacques\)</span> <span class="math inline">\(Bertin\)</span>, a french cartographer published a book <span class="math inline">\(Semiologie\)</span> <span class="math inline">\(Graphique\)</span>, which brought forward concept of graphic variables. These variables highlight <strong>methods using which different information can be obtained from the data</strong>. The seven graphic variables as mentioned in <span class="math inline">\(Semiology\)</span> <span class="math inline">\(of\)</span> <span class="math inline">\(graphics\)</span> (English version) are as under:-</p>
+<section id="location." class="level3">
+<h3 class="anchored" data-anchor-id="location.">Location.</h3>
+<p>The location of a spatial object varies with changing projections. It is important to understand that the transformation of CRS from geographic to projected, from raster to vector should be done with caution. The method of choice should be guided by the research objectives and need to preserve shape or location.</p>
+</section>
+<section id="value." class="level3">
+<h3 class="anchored" data-anchor-id="value.">Value.</h3>
+<p>The value of a variable is related to the darkness/ lightness of a symbol. It is usually used for variables on an interval or ratio scale. Traditionally, higher values are depicted darker.</p>
+</section>
+<section id="color" class="level3">
+<h3 class="anchored" data-anchor-id="color">Color</h3>
+<p>Color can be considered as most complex graphic variable. It represents varied sensations to different viewers. In addition, human eye is not equally sensitive across the spectrum of colors. Further, cultural affiliations, traditional representations and understandings provide challanges. A golden rule recommended is to first use color-blind friendly palettes. In the domain of Public Health, it is important to consider the color and its depiction during visualization to avoid ambiguous communication. For example: Color choice in vaccination coverage visualization as compared to color choice in obesity.</p>
+</section>
+<section id="size." class="level3">
+<h3 class="anchored" data-anchor-id="size.">Size.</h3>
+<p>In proportional symbol maps, the size of a symbol represents the difference in quantum of observations. The underlying type of data, classification adopted, transformations, and outlier management among others should be explored during visualizations.</p>
+</section>
+<section id="shape." class="level3">
+<h3 class="anchored" data-anchor-id="shape.">Shape.</h3>
+<p>Similar to size, choice of shape of the symbol can provide clarity or increase confusion, if not considered carefully. Different shapes can be provided to distinguish different types of variables. The same can be considered to distinguish sub-types of a variable. For example, dotted lines and solid lines can be used to distinguish roads from rivers but can also be used to distinguish main roads from side-roads. Understanding of datasets and variables help in deciding correct shapes for representation of data.</p>
+</section>
+<section id="space." class="level3">
+<h3 class="anchored" data-anchor-id="space.">Space.</h3>
+<p>The arrangement of symbols can also be used to represent differences. For example: In a dot map representing dengue occurrence data, space between the dots represent disease clustering, if any. Again, the interpretation of a variable needs careful consideration, as the case occurrence may be higher just because of underlying population figures and not otherwise.</p>
+</section>
+<section id="orientation." class="level3">
+<h3 class="anchored" data-anchor-id="orientation.">Orientation.</h3>
+<p>Understanding the orientation of a pattern may provide critical insights into disease epidemiology. For eg. occurrence of a disease along with the course of a river may indicate risk factors associated with disease.</p>
+</section>
+</section>
+<section id="map-components." class="level2">
+<h2 class="anchored" data-anchor-id="map-components.">Map components.</h2>
+<section id="map." class="level3">
+<h3 class="anchored" data-anchor-id="map.">Map.</h3>
+<p>The vector or raster map is central to map visualizations.</p>
+</section>
+<section id="title." class="level3">
+<h3 class="anchored" data-anchor-id="title.">Title.</h3>
+<p>A short and clear title must be provided. In addition, subtitles can be added, if required.</p>
+</section>
+<section id="distance-and-scale." class="level3">
+<h3 class="anchored" data-anchor-id="distance-and-scale.">Distance and Scale.</h3>
+<p>There are two options for displaying information related to distance and scale in a map.<br>
+1. Display of a scale bar.<br>
+2. Use of x and y axes of the display as labeling axes.</p>
+</section>
+<section id="direction." class="level3">
+<h3 class="anchored" data-anchor-id="direction.">Direction.</h3>
+<p>Similar to symbolism of scale, direction can be displayed as a symbol or can be implicit in the labeled axes. Conventionally, true North is provided as a symbol in maps.</p>
+</section>
+<section id="legend." class="level3">
+<h3 class="anchored" data-anchor-id="legend.">Legend.</h3>
+<p>Not all maps require a legend. When present, due consideration to Graphic variables should be given.</p>
+</section>
+<section id="credits." class="level3">
+<h3 class="anchored" data-anchor-id="credits.">Credits.</h3>
+<p>The data sources, source of geospatial files should be provided.</p>
+</section>
+</section>
+<section id="understanding-the-process-of-map-creation." class="level2">
+<h2 class="anchored" data-anchor-id="understanding-the-process-of-map-creation.">Understanding the process of Map creation.</h2>
+<p>The first step in any map making should be based on careful understanding of Co-ordinate Reference Systems. For beginners, it is recommended that all map making and spatial manipulations should be undertaken using <strong>ESPG 4326</strong>.</p>
+<div class="cell" data-hash="2_visualization_cache/html/unnamed-chunk-2_306790124f55c0df9f2b4ab271b9c23b">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setting crs to 4326</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>india <span class="ot">&lt;-</span> india <span class="sc">|&gt;</span> </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">4326</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, lets first create a map of India as per component of maps learned so far.</p>
+<section id="creating-a-base-map." class="level3">
+<h3 class="anchored" data-anchor-id="creating-a-base-map.">Creating a Base map.</h3>
+<div class="cell" data-hash="2_visualization_cache/html/unnamed-chunk-3_826f016a3a3dfb0784257cefe4eb2c43">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>india <span class="sc">|&gt;</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="adding-title-sub-title." class="level3">
+<h3 class="anchored" data-anchor-id="adding-title-sub-title.">Adding Title/ sub-title.</h3>
+<div class="cell" data-hash="2_visualization_cache/html/unnamed-chunk-4_2578e8b3af7f0c0addc0cb6513d3a7c6">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>india <span class="sc">|&gt;</span> <span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"India map"</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Spatial Epidemiology Workshop IAPSMCON 2024"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="describing-distance-and-scale." class="level3">
+<h3 class="anchored" data-anchor-id="describing-distance-and-scale.">Describing Distance and Scale.</h3>
+<div class="cell" data-hash="2_visualization_cache/html/unnamed-chunk-5_9b0cfc2d5eda9b474b5e60fbe8bc0fc1">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>india <span class="sc">|&gt;</span> <span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"India map"</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Spatial Epidemiology Workshop IAPSMCON 2024"</span>)<span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  ggspatial<span class="sc">::</span><span class="fu">annotation_scale</span>(<span class="at">location =</span> <span class="st">"bl"</span>) <span class="co">#bl/ br/ tr/ tl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="direction-symbols." class="level3">
+<h3 class="anchored" data-anchor-id="direction-symbols.">Direction symbols.</h3>
+<div class="cell" data-hash="2_visualization_cache/html/unnamed-chunk-6_96e3ec590419ddb5d750b664c8e7e177">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>india <span class="sc">|&gt;</span> <span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"India map"</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Spatial Epidemiology Workshop IAPSMCON 2024"</span>)<span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  ggspatial<span class="sc">::</span><span class="fu">annotation_scale</span>(<span class="at">location =</span> <span class="st">"bl"</span>)<span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  ggspatial<span class="sc">::</span><span class="fu">annotation_north_arrow</span>(<span class="at">location =</span> <span class="st">"br"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="adding-axis-labels" class="level3">
+<h3 class="anchored" data-anchor-id="adding-axis-labels">Adding axis labels</h3>
+<div class="cell" data-hash="2_visualization_cache/html/unnamed-chunk-7_9b33be6c304f9b9c4eb20355d9929b69">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>india <span class="sc">|&gt;</span> <span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"India map"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Spatial Epidemiology Workshop IAPSMCON 2024"</span>)<span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  ggspatial<span class="sc">::</span><span class="fu">annotation_scale</span>(<span class="at">location =</span> <span class="st">"bl"</span>)<span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  ggspatial<span class="sc">::</span><span class="fu">annotation_north_arrow</span>(<span class="at">location =</span> <span class="st">"tr"</span>)<span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Longitude"</span>)<span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Latitude"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="acknowledging-credits." class="level3">
+<h3 class="anchored" data-anchor-id="acknowledging-credits.">Acknowledging Credits.</h3>
+<div class="cell" data-hash="2_visualization_cache/html/unnamed-chunk-8_9fd1fab91e724749ff557dd62bef9a76">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>india <span class="sc">|&gt;</span> <span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"India map"</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Spatial Epidemiology Workshop"</span>)<span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  ggspatial<span class="sc">::</span><span class="fu">annotation_scale</span>(<span class="at">location =</span> <span class="st">"bl"</span>)<span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  ggspatial<span class="sc">::</span><span class="fu">annotation_north_arrow</span>(<span class="at">location =</span> <span class="st">"tr"</span>)<span class="sc">+</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Longitude"</span>)<span class="sc">+</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Latitude"</span>)<span class="sc">+</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fl">87.5</span>, </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> <span class="fl">10.3</span>, </span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">label =</span> <span class="st">"Credits: IAPSMCON 2024"</span>),</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> <span class="st">"black"</span>, </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">check_overlap =</span> T, </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">size =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Scale on map varies by more than 10%, scale bar may be inaccurate</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="2_visualization_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="adding-labels-and-legends." class="level3">
+<h3 class="anchored" data-anchor-id="adding-labels-and-legends.">Adding labels and legends.</h3>
+<p>Addition of labels and legends is optional in map making. The following code can be used to add labels to the map</p>
+<div class="cell" data-hash="2_visualization_cache/html/unnamed-chunk-9_e12675975bd7380a64dbcd9faf40967f">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#adding abbreviations</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>india<span class="sc">$</span>abbr <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"LA"</span>,<span class="st">"AP"</span>,<span class="st">"AR"</span>, <span class="st">"AS"</span>,<span class="st">"BR"</span>, <span class="st">"CH"</span>,<span class="st">"CT"</span>, <span class="st">"DL"</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>              <span class="st">"GA"</span>, <span class="st">"GJ"</span>,<span class="st">"HR"</span>, <span class="st">"HP"</span>,<span class="st">"JH"</span>, <span class="st">"KA"</span>,<span class="st">"KL"</span>, <span class="st">"MP"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>              <span class="st">"MH"</span>,<span class="st">"MN"</span>,<span class="st">"ML"</span>, <span class="st">"MZ"</span>,<span class="st">"NL"</span>, <span class="st">"OR"</span>,<span class="st">"PY"</span>, <span class="st">"PB"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>              <span class="st">"RJ"</span>, <span class="st">"SK"</span>,<span class="st">"TN"</span>, <span class="st">"TR"</span>,<span class="st">"UP"</span>, <span class="st">"UT"</span>,<span class="st">"WB"</span>, <span class="st">"TG"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>              <span class="st">"JK"</span>, <span class="st">"LD"</span>,<span class="st">"AN"</span>, <span class="st">"DDDN"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="2_visualization_cache/html/unnamed-chunk-10_dd0cf51c4b829e0ff8fd4c5adee6791a">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## labeling abbreviations</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>india <span class="sc">|&gt;</span> <span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"India map"</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Spatial Epidemiology Workshop IAPSMCON 2024"</span>)<span class="sc">+</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  ggspatial<span class="sc">::</span><span class="fu">annotation_scale</span>(<span class="at">location =</span> <span class="st">"bl"</span>)<span class="sc">+</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  ggspatial<span class="sc">::</span><span class="fu">annotation_north_arrow</span>(<span class="at">location =</span> <span class="st">"tr"</span>)<span class="sc">+</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Longitude"</span>)<span class="sc">+</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Latitude"</span>)<span class="sc">+</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fl">87.5</span>, <span class="at">y =</span> <span class="fl">10.3</span>, <span class="at">label =</span> <span class="st">"Credits: IAPSMCON 2024"</span>),</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">check_overlap =</span> T, <span class="at">size =</span> <span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf_label</span>(<span class="fu">aes</span>(<span class="at">label =</span> abbr))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="visualisation-of-point-data." class="level2">
+<h2 class="anchored" data-anchor-id="visualisation-of-point-data.">Visualisation of point data.</h2>
+<p><strong>Kindly note: For the purpose of clarity on a particular aspect of the map, we will avoid placing all components of a map across the session. This is important to understand that when communicating maps/ figures, all components should be present.</strong></p>
+<section id="dot-maps." class="level3">
+<h3 class="anchored" data-anchor-id="dot-maps.">Dot Maps.</h3>
+<p>The simplest method to visualize disease occurrence patterns is creation of dot maps. They help us understand spatial dependencies in disease occurrence. The spatial clustering of a disease is suggestive of factors present/ absent in locations with high disease occurrence as compared to locations with low disease occurrence. Thus, point maps provides visual tool for providing estimates of Spatial Clustering. Important limitation of these dot maps is the inability to visualize independent events as the number of observations increase or multiple events are observed at the same location. To overcome the same methods such as smoothing, rasterisation and dot density maps is recommended.</p>
+</section>
+<section id="illustrative-example-john-snow-maps" class="level3">
+<h3 class="anchored" data-anchor-id="illustrative-example-john-snow-maps">Illustrative Example: John Snow maps</h3>
+<p>Let us create a dot map of John Snow data. To do the same, we need to convert <code>data.frame</code> into an <code>sf</code> object using the <code>st_as_af()</code> function.</p>
+<div class="cell" data-hash="2_visualization_cache/html/unnamed-chunk-11_0a0ef0b04046938f413d9dc389a83980">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>snow_deaths_sf <span class="ot">&lt;-</span> snow_deaths <span class="sc">|&gt;</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">'x'</span>, <span class="st">'y'</span>), </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">crs =</span> <span class="dv">4326</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>snow_deaths_sf <span class="sc">|&gt;</span> </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2_visualization_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Now, we can add additional layers such as the water pumps and the streets of Soho, London.</p>
+<div class="cell" data-hash="2_visualization_cache/html/unnamed-chunk-12_da6b624789c0a9ce37c4ea8cf63c9fab">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>snow_streets_sf <span class="ot">&lt;-</span> snow_streets <span class="sc">|&gt;</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">'x'</span>, <span class="st">'y'</span>), <span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(street) <span class="sc">|&gt;</span> </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">n =</span> <span class="fu">mean</span>(n)) <span class="sc">|&gt;</span>  </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_cast</span>(<span class="st">'LINESTRING'</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>snow_streets_sf <span class="sc">|&gt;</span> </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2_visualization_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Let us add the streets of Soho, London as a new layer in our previously created deaths map.</p>
+<div class="cell" data-hash="2_visualization_cache/html/unnamed-chunk-13_4862244426e988c8702501a6aa3ade56">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> snow_streets_sf) <span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> snow_deaths_sf, </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">color =</span> <span class="st">'red'</span>, </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">alpha =</span> <span class="fl">0.5</span>, </span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">size =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2_visualization_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We can now add a new layer of water pumps on the above map.</p>
+<div class="cell" data-hash="2_visualization_cache/html/unnamed-chunk-14_db1974d86904bbd16da353616797d604">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>snow_pumps_sf <span class="ot">&lt;-</span> snow_pumps <span class="sc">|&gt;</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">'x'</span>, <span class="st">'y'</span>), </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">crs =</span> <span class="dv">4326</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> snow_streets_sf) <span class="sc">+</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> snow_deaths_sf, <span class="at">color =</span> <span class="st">'red'</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> snow_pumps_sf , <span class="at">shape =</span> <span class="dv">22</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">fill =</span> <span class="st">'blue'</span>, <span class="at">color =</span> <span class="st">'blue'</span>) <span class="sc">+</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf_label</span>(<span class="at">data =</span> snow_pumps_sf, </span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>                <span class="fu">aes</span>(<span class="at">label =</span> label), </span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">nudge_x =</span> <span class="fl">0.025</span>, </span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">nudge_y =</span> <span class="sc">-</span><span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in st_point_on_surface.sfc(sf::st_zm(x)): st_point_on_surface may not
+give correct results for longitude/latitude data</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="2_visualization_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="visualisation-of-aggregate-data." class="level2">
+<h2 class="anchored" data-anchor-id="visualisation-of-aggregate-data.">Visualisation of aggregate data.</h2>
+<section id="choropleth-maps." class="level3">
+<h3 class="anchored" data-anchor-id="choropleth-maps.">Choropleth Maps.</h3>
+<p>The term “choropleth” is derived from Greek words <span class="math inline">\(Khoros\)</span> meaning “place” and <span class="math inline">\(plethein\)</span> meaning “full”. In choropleth maps, aggregated value for a given area forms the basis of visual representation. The three major challenges in interpretation of choropleth maps arise from large area polygons, Modified Unit Area Problem, and presence of skewed data. Deliberation on these issues, creation of cartograms, data transformation methods such Box-Cox transformations and multi-level analysis are recommended to overcome these limitations.</p>
+<section id="example-covid-19-cases" class="level4">
+<h4 class="anchored" data-anchor-id="example-covid-19-cases">Example: COVID 19 cases</h4>
+<p>Lets summarise state wise total covid 19 cases and merge it with india map to plot a choropleth map as demonstration.</p>
+<div class="cell" data-hash="2_visualization_cache/html/unnamed-chunk-15_4da0820c201268cd46b4d88116d7aa32">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> covid <span class="sc">|&gt;</span> </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(state) <span class="sc">|&gt;</span> </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">cases =</span> <span class="fu">sum</span>(cases))</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>india <span class="ot">&lt;-</span> <span class="fu">left_join</span>(india, df,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"abbr"</span> <span class="ot">=</span> <span class="st">"state"</span>)) </span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>india <span class="sc">|&gt;</span> </span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> cases)) <span class="sc">+</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"white"</span>, <span class="at">high =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">"COVID-19 cases"</span>,</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"For demonstration only"</span>,</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"India COVID-19 cases (Subset data)"</span>,</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"For demonstration only"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2_visualization_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><strong>Think!!</strong> Why such maps are not good visualizations?</p>
+</section>
+</section>
+</section>
+<section id="visualization-using-web-based-maps." class="level2">
+<h2 class="anchored" data-anchor-id="visualization-using-web-based-maps.">Visualization using Web based maps.</h2>
+<p>Many a times it becomes difficult to get a shape file of the stud area. Various sources of shape files is available online (eg. DataMeet, SEDAC, HGL, DIVA-GIS, Bhuvan, Survey of India, etc.). Leaflet package helps us to use web maps from open sources such as Open Street Map, ESRI maps, cartoDB, etc.</p>
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>The science and art of making maps<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>The process of map creation as primary objective but owing little to past cartographic traditions.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Measure of spatial clustering. Details covered in “Measures of Spatial Clustering” session<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

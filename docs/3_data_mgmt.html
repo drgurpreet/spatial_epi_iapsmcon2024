@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Hands-on Workshop on Spatial Epidemiology using R: IPASMCON 2024 - Spatial Data Management</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href=".//images/nwhda_hex.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <img src="./images/spatial_hex.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Hands-on Workshop on Spatial Epidemiology using R: IPASMCON 2024</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./1_intro.html" rel="" target="">
+ <span class="menu-text">Introduction to Spatial Epidemiology</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./2_visualization.html" rel="" target="">
+ <span class="menu-text">Spatial Data Visualization in Epidemiology</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./3_data_mgmt.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Spatial Data Management</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./4_spatial_stats.html" rel="" target="">
+ <span class="menu-text">Spatial Statistics in Epidemiology</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./5_gwr.html" rel="" target="">
+ <span class="menu-text">Spatial Regression models: An introduction</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar"><div class="quarto-margin-header"><div class="margin-header-item">
+<p><img src=".\images/spatial_hex.png" class="img-fluid" style="width:65.0%"></p>
+</div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction." id="toc-introduction." class="nav-link active" data-scroll-target="#introduction.">Introduction.</a></li>
+  <li><a href="#why-importing-as-sf-object-is-recommended" id="toc-why-importing-as-sf-object-is-recommended" class="nav-link" data-scroll-target="#why-importing-as-sf-object-is-recommended">Why importing as sf object is recommended?</a></li>
+  <li><a href="#understanding-and-tranformation-of-coordinated-reference-system-crs." id="toc-understanding-and-tranformation-of-coordinated-reference-system-crs." class="nav-link" data-scroll-target="#understanding-and-tranformation-of-coordinated-reference-system-crs.">Understanding and Tranformation of Coordinated Reference System (CRS).</a>
+  <ul class="collapse">
+  <li><a href="#know-the-crs" id="toc-know-the-crs" class="nav-link" data-scroll-target="#know-the-crs">Know the CRS</a></li>
+  <li><a href="#transforming-crs-of-spatial-data" id="toc-transforming-crs-of-spatial-data" class="nav-link" data-scroll-target="#transforming-crs-of-spatial-data">Transforming CRS of Spatial Data</a></li>
+  </ul></li>
+  <li><a href="#manipulating-spatial-data-based-on-their-location-and-shape." id="toc-manipulating-spatial-data-based-on-their-location-and-shape." class="nav-link" data-scroll-target="#manipulating-spatial-data-based-on-their-location-and-shape.">Manipulating Spatial Data based on their location and shape.</a>
+  <ul class="collapse">
+  <li><a href="#subset-spatial-data-based-on-attributes." id="toc-subset-spatial-data-based-on-attributes." class="nav-link" data-scroll-target="#subset-spatial-data-based-on-attributes.">Subset Spatial data based on attributes.</a></li>
+  <li><a href="#spatial-relationships-based-on-topology." id="toc-spatial-relationships-based-on-topology." class="nav-link" data-scroll-target="#spatial-relationships-based-on-topology.">Spatial relationships based on Topology.</a></li>
+  <li><a href="#spatial-overlay-joins." id="toc-spatial-overlay-joins." class="nav-link" data-scroll-target="#spatial-overlay-joins.">Spatial overlay/ joins.</a></li>
+  <li><a href="#obtaining-aggregated-spatial-data." id="toc-obtaining-aggregated-spatial-data." class="nav-link" data-scroll-target="#obtaining-aggregated-spatial-data.">Obtaining aggregated spatial data.</a></li>
+  <li><a href="#area-calculations." id="toc-area-calculations." class="nav-link" data-scroll-target="#area-calculations.">Area calculations.</a></li>
+  </ul></li>
+  <li><a href="#geometry-based-functions." id="toc-geometry-based-functions." class="nav-link" data-scroll-target="#geometry-based-functions.">Geometry based functions.</a>
+  <ul class="collapse">
+  <li><a href="#centroid-creation." id="toc-centroid-creation." class="nav-link" data-scroll-target="#centroid-creation.">Centroid creation.</a></li>
+  <li><a href="#adding-centroids-to-the-dataset." id="toc-adding-centroids-to-the-dataset." class="nav-link" data-scroll-target="#adding-centroids-to-the-dataset.">Adding centroids to the dataset.</a></li>
+  <li><a href="#buffer-creation" id="toc-buffer-creation" class="nav-link" data-scroll-target="#buffer-creation">Buffer creation</a></li>
+  </ul></li>
+  <li><a href="#saving-spatial-data-and-its-output." id="toc-saving-spatial-data-and-its-output." class="nav-link" data-scroll-target="#saving-spatial-data-and-its-output.">Saving Spatial Data and its output.</a></li>
+  <li><a href="#methods-for-spatial-data-manipulation-of-raster-datasets." id="toc-methods-for-spatial-data-manipulation-of-raster-datasets." class="nav-link" data-scroll-target="#methods-for-spatial-data-manipulation-of-raster-datasets.">Methods for spatial data manipulation of Raster datasets.</a>
+  <ul class="collapse">
+  <li><a href="#resolution" id="toc-resolution" class="nav-link" data-scroll-target="#resolution">Resolution</a></li>
+  <li><a href="#raster-data-subsets." id="toc-raster-data-subsets." class="nav-link" data-scroll-target="#raster-data-subsets.">Raster data subsets.</a></li>
+  <li><a href="#map-algebra." id="toc-map-algebra." class="nav-link" data-scroll-target="#map-algebra.">Map algebra.</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Spatial Data Management</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+<p>Welcome to the world of Spatial Epidemiology!!</p>
+<section id="introduction." class="level2">
+<h2 class="anchored" data-anchor-id="introduction.">Introduction.</h2>
+<p>It is expected that by end of the session, participants will be able to understand as well as apply varied methods for manipulation of spatial data sets.</p>
+</section>
+<section id="why-importing-as-sf-object-is-recommended" class="level2">
+<h2 class="anchored" data-anchor-id="why-importing-as-sf-object-is-recommended">Why importing as sf object is recommended?</h2>
+<p>Simple features are open standard objects which have been endorsed by Open Geospatial Consortium. They represent heirarchial data model for 17 geometry types.</p>
+<p>During this session and in subsequent sessions on Spatial Epidemiology, we shall be using <code>sf</code> package. This is because <em>sf</em> package has inbuilt capabilities of handling 7 most common data models of simple features. Further,R spatial ecosystem is more efficient with use of <em>sf</em> package compared to previous packages.</p>
+<p>Shape file format data can be imported into the R ecosystem using <code>st_read()</code> or <code>read_sf()</code> function. Both are similar in function with subtle differences. read_sf() chooses a few tidyverse defaults such as silent (st_read gives a short report), returns a spatial tibble (st_read returns a data frame), does not convert strings to factors (st_read converts to factors by default) and accepts list columns as input. For other formats st_as_sf() contains a family of conversion functions.</p>
+</section>
+<section id="understanding-and-tranformation-of-coordinated-reference-system-crs." class="level2">
+<h2 class="anchored" data-anchor-id="understanding-and-tranformation-of-coordinated-reference-system-crs.">Understanding and Tranformation of Coordinated Reference System (CRS).</h2>
+<section id="know-the-crs" class="level3">
+<h3 class="anchored" data-anchor-id="know-the-crs">Know the CRS</h3>
+<p>To know the crs of a spatial dataset, use <code>st_crs()</code> function.</p>
+<div class="cell" data-hash="3_data_mgmt_cache/html/unnamed-chunk-2_a8485910f8c97f84421b085f358415f1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>india <span class="sc">|&gt;</span> </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_crs</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Coordinate Reference System:
+  User input: WGS 84 / Pseudo-Mercator 
+  wkt:
+PROJCRS["WGS 84 / Pseudo-Mercator",
+    BASEGEOGCRS["WGS 84",
+        DATUM["World Geodetic System 1984",
+            ELLIPSOID["WGS 84",6378137,298.257223563,
+                LENGTHUNIT["metre",1]]],
+        PRIMEM["Greenwich",0,
+            ANGLEUNIT["degree",0.0174532925199433]],
+        ID["EPSG",4326]],
+    CONVERSION["Popular Visualisation Pseudo-Mercator",
+        METHOD["Popular Visualisation Pseudo Mercator",
+            ID["EPSG",1024]],
+        PARAMETER["Latitude of natural origin",0,
+            ANGLEUNIT["degree",0.0174532925199433],
+            ID["EPSG",8801]],
+        PARAMETER["Longitude of natural origin",0,
+            ANGLEUNIT["degree",0.0174532925199433],
+            ID["EPSG",8802]],
+        PARAMETER["False easting",0,
+            LENGTHUNIT["metre",1],
+            ID["EPSG",8806]],
+        PARAMETER["False northing",0,
+            LENGTHUNIT["metre",1],
+            ID["EPSG",8807]]],
+    CS[Cartesian,2],
+        AXIS["easting (X)",east,
+            ORDER[1],
+            LENGTHUNIT["metre",1]],
+        AXIS["northing (Y)",north,
+            ORDER[2],
+            LENGTHUNIT["metre",1]],
+    USAGE[
+        SCOPE["unknown"],
+        AREA["World - 85Â°S to 85Â°N"],
+        BBOX[-85.06,-180,85.06,180]],
+    ID["EPSG",3857]]</code></pre>
+</div>
+</div>
+</section>
+<section id="transforming-crs-of-spatial-data" class="level3">
+<h3 class="anchored" data-anchor-id="transforming-crs-of-spatial-data">Transforming CRS of Spatial Data</h3>
+<p>When we have two or more related spatial data sets, and the CRS are different, we can transform the CRS using <code>st_transform()</code> function.</p>
+<div class="cell" data-hash="3_data_mgmt_cache/html/unnamed-chunk-3_89a96aa0236618d1d4fc9909eb954929">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>india <span class="ot">&lt;-</span> india <span class="sc">|&gt;</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">4326</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="manipulating-spatial-data-based-on-their-location-and-shape." class="level2">
+<h2 class="anchored" data-anchor-id="manipulating-spatial-data-based-on-their-location-and-shape.">Manipulating Spatial Data based on their location and shape.</h2>
+<section id="subset-spatial-data-based-on-attributes." class="level3">
+<h3 class="anchored" data-anchor-id="subset-spatial-data-based-on-attributes.">Subset Spatial data based on attributes.</h3>
+<p>The process of selecting only those locations which have a specified attribute is known as sub-setting and the output is subset. It is done to understand spatial distribution of a given variable and thus identify underlying patterns. <em>Sf</em> objects have inherent data frame class. Hence, <code>filter()</code> function can be used for obtaining spatial subsets.</p>
+<div class="cell" data-hash="3_data_mgmt_cache/html/unnamed-chunk-4_6d52c5634c0755b92f9cc9297abeaa2a">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>mh_subset <span class="ot">&lt;-</span> india <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(NAME_1 <span class="sc">==</span> <span class="st">"Maharashtra"</span>) </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>mh_subset <span class="sc">|&gt;</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>() <span class="sc">+</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Subset map of Maharashtra"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="3_data_mgmt_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="spatial-relationships-based-on-topology." class="level3">
+<h3 class="anchored" data-anchor-id="spatial-relationships-based-on-topology.">Spatial relationships based on Topology.</h3>
+<p>Topology is defined as spatial relationship between the objects. These include relationships such as common boundaries, intersections, one within the other, crossings, dis junctions, etc.</p>
+<div class="cell" data-hash="3_data_mgmt_cache/html/unnamed-chunk-5_98bbcff465713f8fd6acdac55f07fc47">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mh_subset <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_intersects</span>(india)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sparse geometry binary predicate list of length 1, where the predicate
+was `intersects'
+ 1: 7, 9, 10, 14, 16, 17, 32, 36</code></pre>
+</div>
+</div>
+<p>Similarly, <code>st_within()</code> is used to find the relationship for those strictly within boundaries, <code>st_disjoint()</code> is opposite of <code>st_intersect()</code>, <code>st_touches()</code> is for those objects which are touching each other (eg. polygons) and <code>st_within_distance()</code> for the objects within a buffer distance from the said object.</p>
+</section>
+<section id="spatial-overlay-joins." class="level3">
+<h3 class="anchored" data-anchor-id="spatial-overlay-joins.">Spatial overlay/ joins.</h3>
+<p>Presence of a unique key is pre-requisite to joining of datasets. The same concept is utilised for overlay or joining of two or more spatial datasets with location coordinates as unique key. <code>st_join()</code> performs spatial joins using location coordinates as unique key. By default, <code>left join</code> is undertaken. in is performed.</p>
+<p>Lets learn it through an example. We shall add a new variable to Maharashtra subset and add the same in India file using spatial overlay.</p>
+<div class="cell" data-hash="3_data_mgmt_cache/html/unnamed-chunk-6_9a9872a3e0ef72345b8c15b4b91fbc49">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>mh_subset <span class="ot">&lt;-</span> mh_subset <span class="sc">|&gt;</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">check_variable =</span> <span class="st">"The states sharing border with Maharashtra subset data"</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>india_joined <span class="ot">&lt;-</span> india <span class="sc">|&gt;</span> </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_join</span>(mh_subset)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>india_joined <span class="sc">|&gt;</span> </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> <span class="fu">ifelse</span>(</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    check_variable <span class="sc">==</span> <span class="st">"The states sharing border with Maharashtra subset data"</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"red"</span>, <span class="st">"white"</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  ))) <span class="sc">+</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="3_data_mgmt_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="obtaining-aggregated-spatial-data." class="level3">
+<h3 class="anchored" data-anchor-id="obtaining-aggregated-spatial-data.">Obtaining aggregated spatial data.</h3>
+<p>Aggregation of spatial data is a process of condensing the dataset to obtain stratified summary measures. The same can be done using <code>summarise()</code> function.</p>
+<div class="cell" data-hash="3_data_mgmt_cache/html/unnamed-chunk-7_e38231d7952209fc6867070201bb33b2">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>india_joined <span class="sc">|&gt;</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(check_variable) <span class="sc">|&gt;</span> </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_pop_density =</span> <span class="fu">mean</span>(pop_density_india),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"keep"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="area-calculations." class="level3">
+<h3 class="anchored" data-anchor-id="area-calculations.">Area calculations.</h3>
+<p>To determine area of a polygon, st_area() function is used.</p>
+<div class="cell" data-hash="3_data_mgmt_cache/html/unnamed-chunk-8_7711537041307c56356df33efc31e4f3">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>india <span class="sc">|&gt;</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_area</span>()  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Units: [m^2]
+ [1] 164871219452 163066121108  82163787556  78559330387  94431499839
+ [6]    118238781 135799676380   1504310841   3708836029 185709212363
+[11]  44081446376  55538115194  80226215548 192071260093  37853176465
+[16] 308776245994 308259630387  22368416342  22471908102  21187513837
+[21]  16631116132 156080143451    549465348  50274014378 342516183864
+[26]   7152632353 130728371017  10472109552 241157134272  53705294257
+[31]  85488226543 112699854048  52883743670   7528052264    665633067
+[36]   1050420948</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="geometry-based-functions." class="level2">
+<h2 class="anchored" data-anchor-id="geometry-based-functions.">Geometry based functions.</h2>
+<p>We can transform geometries with unary and binary transformations. Unary transformations are based on a single geometry in isolation and includes measures such as creation of buffers and centroids. Binary operations modify the shape of one geometry based on the other and includes measures such as clipping and geometry unions.</p>
+<section id="centroid-creation." class="level3">
+<h3 class="anchored" data-anchor-id="centroid-creation.">Centroid creation.</h3>
+<p>The centroid based processes identify the center of a sf object and is similar to measure of central tendency. There are many variations in ways to define centre of an sf object, however, use of geographical centre remains most common. <code>st_centroid()</code> provides centroid values.</p>
+<div class="cell" data-hash="3_data_mgmt_cache/html/unnamed-chunk-9_86d0dbe4664ad2139e80c75bbee5be41">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>india_point <span class="ot">&lt;-</span> india <span class="sc">|&gt;</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_centroid</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: st_centroid assumes attributes are constant over geometries</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>india_point</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 36 features and 1 field
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 71.5959 ymin: 10.44756 xmax: 94.66995 ymax: 34.9185
+Geodetic CRS:  WGS 84
+First 10 features:
+              NAME_1                  geometry
+1             Ladakh  POINT (76.78379 34.9185)
+2     Andhra Pradesh POINT (79.92681 15.73946)
+3  Arunachal Pradesh POINT (94.66995 28.04267)
+4              Assam POINT (92.82214 26.35992)
+5              Bihar  POINT (85.6038 25.68062)
+6         Chandigarh POINT (76.76828 30.73383)
+7       Chhattisgarh  POINT (82.02196 21.2504)
+10             Delhi   POINT (77.109 28.64646)
+11               Goa POINT (74.05754 15.35951)
+12           Gujarat  POINT (71.5959 22.69363)</code></pre>
+</div>
+</div>
+</section>
+<section id="adding-centroids-to-the-dataset." class="level3">
+<h3 class="anchored" data-anchor-id="adding-centroids-to-the-dataset.">Adding centroids to the dataset.</h3>
+<div class="cell" data-hash="3_data_mgmt_cache/html/unnamed-chunk-10_85a7b2810c60aafc7aabb4a03ef6345d">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>india <span class="ot">&lt;-</span> <span class="fu">cbind</span>(india, </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>               <span class="fu">st_coordinates</span>(<span class="fu">st_centroid</span>(india)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: st_centroid assumes attributes are constant over geometries</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>india</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 36 features and 3 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: 68.18625 ymin: 6.755953 xmax: 97.41516 ymax: 37.09701
+Geodetic CRS:  WGS 84
+First 10 features:
+              NAME_1        X        Y                       geometry
+1             Ladakh 76.78379 34.91850 MULTIPOLYGON (((76.76236 33...
+2     Andhra Pradesh 79.92681 15.73946 MULTIPOLYGON (((82.29951 16...
+3  Arunachal Pradesh 94.66995 28.04267 MULTIPOLYGON (((96.15778 29...
+4              Assam 92.82214 26.35992 MULTIPOLYGON (((89.87145 25...
+5              Bihar 85.60380 25.68062 MULTIPOLYGON (((84.11342 27...
+6         Chandigarh 76.76828 30.73383 MULTIPOLYGON (((76.77557 30...
+7       Chhattisgarh 82.02196 21.25040 MULTIPOLYGON (((83.3276 24....
+10             Delhi 77.10900 28.64646 MULTIPOLYGON (((77.08335 28...
+11               Goa 74.05754 15.35951 MULTIPOLYGON (((73.78181 15...
+12           Gujarat 71.59590 22.69363 MULTIPOLYGON (((70.86097 20...</code></pre>
+</div>
+</div>
+</section>
+<section id="buffer-creation" class="level3">
+<h3 class="anchored" data-anchor-id="buffer-creation">Buffer creation</h3>
+<div class="cell" data-hash="3_data_mgmt_cache/html/unnamed-chunk-11_21f91dc815ec26d5aa3ca7c54a7051ef">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>buffer_bihar <span class="ot">&lt;-</span> india_point <span class="sc">|&gt;</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(NAME_1 <span class="sc">==</span> <span class="st">"Bihar"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_buffer</span>(<span class="at">dist =</span> <span class="dv">100000</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> india) <span class="sc">+</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> buffer_bihar,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">fill =</span> <span class="st">"red"</span>,</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">alpha =</span> <span class="fl">0.5</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="3_data_mgmt_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="saving-spatial-data-and-its-output." class="level2">
+<h2 class="anchored" data-anchor-id="saving-spatial-data-and-its-output.">Saving Spatial Data and its output.</h2>
+<p>Though <code>st_write()</code> function helps in saving spatial datasets as shapefiles, it is recommended that RDS data format be used as it uses less space in the system and is computationally faster to load subsequently.</p>
+</section>
+<section id="methods-for-spatial-data-manipulation-of-raster-datasets." class="level2">
+<h2 class="anchored" data-anchor-id="methods-for-spatial-data-manipulation-of-raster-datasets.">Methods for spatial data manipulation of Raster datasets.</h2>
+<div class="cell" data-hash="3_data_mgmt_cache/html/unnamed-chunk-12_0e860e054619ab0485c3434e4ffe4597">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>pop_density</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class      : RasterLayer 
+dimensions : 180, 360, 64800  (nrow, ncol, ncell)
+resolution : 1, 1  (x, y)
+extent     : -180, 180, -90, 90  (xmin, xmax, ymin, ymax)
+crs        : +proj=longlat +datum=WGS84 +no_defs 
+source     : pop_density.tif 
+names      : pop_density </code></pre>
+</div>
+</div>
+<section id="resolution" class="level3">
+<h3 class="anchored" data-anchor-id="resolution">Resolution</h3>
+<p>Similar to area calculations in a vector dataset, we would like to know about the resolution of the raster data. The <code>res()</code> function provides dimensions of each of the cell of the raster grid in metres (By default, UTM projection is in meters).</p>
+<div class="cell" data-hash="3_data_mgmt_cache/html/unnamed-chunk-13_5d732f32bff7637ae8978562c43156e5">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">res</span>(pop_density)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 1</code></pre>
+</div>
+</div>
+</section>
+<section id="raster-data-subsets." class="level3">
+<h3 class="anchored" data-anchor-id="raster-data-subsets.">Raster data subsets.</h3>
+<p>To extract value for a specified location <code>terra::extract()</code> function can be used.</p>
+<p>To subset based on extent, the bounding box details can be extracted using <code>st_bbox()</code> function.</p>
+</section>
+<section id="map-algebra." class="level3">
+<h3 class="anchored" data-anchor-id="map-algebra.">Map algebra.</h3>
+<p>Understanding of map algebra makes raster processing faster. There are four subclasses of raster based operations as under:-</p>
+<section id="local." class="level4">
+<h4 class="anchored" data-anchor-id="local.">Local.</h4>
+<p>These operations act independently for each cell of the raster.</p>
+</section>
+<section id="focal." class="level4">
+<h4 class="anchored" data-anchor-id="focal.">Focal.</h4>
+<p>Also known a kernel, moving window or filter operations for raster data, they choose a central cell and its neighbourhood (such as surrounding eight cells, for example). The focal operation acts similar to spatial data aggregation and results in an output of aggregated values for each combination of central cell and its neighbourhood. raster::focal() function can be used for obtaining focal values by defining the matrix for central cell and its neighbourhood.</p>
+</section>
+<section id="zonal." class="level4">
+<h4 class="anchored" data-anchor-id="zonal.">Zonal.</h4>
+<p>The principle behind zonal operations is same as that of focal operations. However, unlike in focal operations, zonal operations can go beyond a rectangular matrix of neighbourhood and can provide aggregated values for a pre-defined shape or distance or area, etc. The raster::zonal() function provides zonal statistics.</p>
+</section>
+<section id="global." class="level4">
+<h4 class="anchored" data-anchor-id="global.">Global.</h4>
+<p>These operations are applied on the entire dataset and are used to summarise the characteristics of the given raster data such as mean, median, IQR, range etc of the datasets.</p>
+</section>
+<section id="merging-rasters." class="level4">
+<h4 class="anchored" data-anchor-id="merging-rasters.">Merging rasters.</h4>
+<p>Two rasters can be merged using <code>raster::merge()</code> function in general. However, depending upon the raster characteristics, more refined methods are available such as from packages landsat, satellite, etc. Merging rasters require same resolution and crs of the rasters as prerequisites.</p>
+<div style="page-break-after: always;"></div>
+</section>
+<section id="illustrative-raster-data-example-population-density-raster" class="level4">
+<h4 class="anchored" data-anchor-id="illustrative-raster-data-example-population-density-raster">Illustrative raster data example: Population density raster</h4>
+<div class="cell" data-hash="3_data_mgmt_cache/html/unnamed-chunk-15_e4a3e330934670cd06e75a395c62fc8e">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>india <span class="ot">&lt;-</span> india <span class="sc">|&gt;</span> </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="fu">st_crs</span>(pop_density))</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>pop_density_india <span class="ot">&lt;-</span> exactextractr<span class="sc">::</span><span class="fu">exact_extract</span>(pop_density,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>                             india,</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"mean"</span>,</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>                             <span class="at">append_cols =</span> <span class="st">"NAME_1"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |==                                                                    |   3%
+  |                                                                            
+  |====                                                                  |   6%
+  |                                                                            
+  |======                                                                |   8%
+  |                                                                            
+  |========                                                              |  11%
+  |                                                                            
+  |==========                                                            |  14%
+  |                                                                            
+  |============                                                          |  17%
+  |                                                                            
+  |==============                                                        |  19%
+  |                                                                            
+  |================                                                      |  22%
+  |                                                                            
+  |==================                                                    |  25%
+  |                                                                            
+  |===================                                                   |  28%
+  |                                                                            
+  |=====================                                                 |  31%
+  |                                                                            
+  |=======================                                               |  33%
+  |                                                                            
+  |=========================                                             |  36%
+  |                                                                            
+  |===========================                                           |  39%
+  |                                                                            
+  |=============================                                         |  42%
+  |                                                                            
+  |===============================                                       |  44%
+  |                                                                            
+  |=================================                                     |  47%
+  |                                                                            
+  |===================================                                   |  50%
+  |                                                                            
+  |=====================================                                 |  53%
+  |                                                                            
+  |=======================================                               |  56%
+  |                                                                            
+  |=========================================                             |  58%
+  |                                                                            
+  |===========================================                           |  61%
+  |                                                                            
+  |=============================================                         |  64%
+  |                                                                            
+  |===============================================                       |  67%
+  |                                                                            
+  |=================================================                     |  69%
+  |                                                                            
+  |===================================================                   |  72%
+  |                                                                            
+  |====================================================                  |  75%
+  |                                                                            
+  |======================================================                |  78%
+  |                                                                            
+  |========================================================              |  81%
+  |                                                                            
+  |==========================================================            |  83%
+  |                                                                            
+  |============================================================          |  86%
+  |                                                                            
+  |==============================================================        |  89%
+  |                                                                            
+  |================================================================      |  92%
+  |                                                                            
+  |==================================================================    |  94%
+  |                                                                            
+  |====================================================================  |  97%
+  |                                                                            
+  |======================================================================| 100%</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>india <span class="ot">&lt;-</span> <span class="fu">left_join</span>(india, pop_density_india)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Joining with `by = join_by(NAME_1)`</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>india <span class="ot">&lt;-</span> india <span class="sc">|&gt;</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">pop_density_india =</span> mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="3_data_mgmt_cache/html/unnamed-chunk-17_79544ab9b8c5d93b77c62c31a52a63e5">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>india <span class="sc">|&gt;</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> pop_density_india)) <span class="sc">+</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"green"</span>, <span class="at">high =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of population density in India"</span>,</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span>  <span class="st">"Source: SEDAC"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="3_data_mgmt_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
